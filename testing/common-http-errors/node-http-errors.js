@@ -14,10 +14,20 @@ const server = require('http')
         console.log('Incomming request... Closing socket.');
         req.socket.destroy();
         break;
+      case '/no-connect':
+        console.log('Incomming request... Not responding.');
+        setTimeout(() => { req.end(); }, 180000);
+        break;
+      case '/no-end':
+        res.write('Hello');
+        console.log('Incomming request... Not ending.');
+        setTimeout(() => { req.end(); }, 180000);
+        break;
+      default:
+        res.write(`try the following: \n ${pathMap(serverAddress.port)}`); //write a response to the client
+        res.end(); //end the response
     }
 
-    res.write(`try the following: \n ${pathMap(serverAddress.port)}`); //write a response to the client
-    res.end(); //end the response
   })
   .listen(1338);
 const serverAddress = server.address();
